@@ -20,8 +20,6 @@ import index from './routes/index.js'
 import people from './routes/people.js'
 import zombies from './routes/zombies.js'
 
-
-
 const app = express()
 const __dirname = new URL('.', import.meta.url).pathname
 

@@ -90,13 +90,10 @@ router.get('/new/', (req, res) => {
 //      - Em caso de erro do INSERT, colocar mensagem vermelhinha
 router.post('/', async (req, res) => {
   
-  const transaction = await db.getConnection();
-  
   const name = req.body.name;
   
   try {
-    await transaction.beginTransaction();
-    const [insertResult] = await transaction.execute(
+    const [insertResult] = await db.execute(
       `INSERT INTO person (id, name, alive, eatenBy)
        VALUES (NULL, ?, ?, NULL)`,
       [name, 1]
@@ -106,7 +103,7 @@ router.post('/', async (req, res) => {
   } catch (error) {
     req.flash('error', 'Não foi possível criar nova pessoa!')
   }
-  res.redirect('/');
+  res.redirect('/')
 })
 
 
@@ -117,6 +114,8 @@ router.post('/', async (req, res) => {
 //   2. Redirecionar para a rota de listagem de pessoas
 //      - Em caso de sucesso do INSERT, colocar uma mensagem feliz
 //      - Em caso de erro do INSERT, colocar mensagem vermelhinha
+router.delete('/person', async () => {
 
+})
 
 export default router

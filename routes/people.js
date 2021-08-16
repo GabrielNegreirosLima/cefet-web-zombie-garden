@@ -114,8 +114,29 @@ router.post('/', async (req, res) => {
 //   2. Redirecionar para a rota de listagem de pessoas
 //      - Em caso de sucesso do INSERT, colocar uma mensagem feliz
 //      - Em caso de erro do INSERT, colocar mensagem vermelhinha
-router.delete('/person', async () => {
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
 
+  try{
+    const [deleteResult] = await db.execute(
+      `DELETE
+      FROM person
+      WHERE id=?`,
+      [id]
+    )
+
+    if (!deleteResult || deleteResult.affectedRows < 1) {
+      throw new Error('Pessoa não encontrada na base de dados. Tente novamente.')
+    }
+
+    req.flash('success', 'Pessoa excluída com sucesso!')
+  }
+  catch (error){
+    console.log(error);
+    req.flash('error', 'Não foi possível excluir esta pessoa!')
+  }
+
+  res.redirect('/people')
 })
 
 export default router
